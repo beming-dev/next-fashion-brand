@@ -112,61 +112,62 @@ const Navigation = ({ isSignin, setIsSignin }) => {
       <style jsx>
         {`
           .nav {
-            position: sticky;
+            position: absolute;
             top: 0;
             min-width: 200px;
             width: 200px;
-            height: 100%;
-            background: white;
+            height: 100vh;
             background: rgba($color: #ffffff, $alpha: 0.5);
             display: flex;
             flex-direction: column;
             align-items: center;
             z-index: 1;
-          }
+            .logo {
+              font-size: 40px;
+              font-weight: bolder;
+              margin-top: 30px;
+              margin-bottom: 50px;
+            }
+            .nav-items {
+              width: 100%;
+              font-size: 20px;
+              font-weight: 600;
+              transition-duration: 1s;
 
-          .logo {
-            font-size: 40px;
-            font-weight: bolder;
-            margin-top: 30px;
-            margin-bottom: 50px;
-          }
+              li {
+                padding: 5px 0;
+              }
 
-          .nav-items {
-            font-size: 20px;
-            font-weight: 600;
-            transition-duration: 1s;
-          }
+              .shop {
+                cursor: pointer;
+              }
 
-          li {
-            padding: 5px 0;
-          }
+              .shop-sub {
+                transition-duration: 0.5s;
+                font-size: 15px;
+                font-weight: 500;
+                color: black;
+                pointer-events: none;
+              }
+            }
 
-          .shop {
-            cursor: pointer;
-          }
+            .sign {
+              display: flex;
+              margin-top: 30px;
+              span {
+                margin: 0 3px;
+                font-weight: 700;
+              }
+            }
 
-          .shop-sub {
-            transition-duration: 0.5s;
-            font-size: 15px;
-            font-weight: 500;
-            color: black;
-            pointer-events: none;
-          }
-
-          .sign {
-            display: flex;
-            margin-top: 30px;
-          }
-
-          span {
-            margin: 0 3px;
-            font-weight: 700;
-          }
-
-          .my {
-            display: flex;
-            margin-top: 30px;
+            .my {
+              display: flex;
+              margin-top: 30px;
+              span {
+                margin: 0 3px;
+                font-weight: 700;
+              }
+            }
           }
         `}
       </style>
