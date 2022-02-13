@@ -11,6 +11,10 @@ const Navigation = ({ isSignin, setIsSignin }) => {
   const [shopSubStyle, setShopSubStyle] = useState({
     height: `${shopHeight}`,
     opacity: `${shopOpacity}`,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justidyContent: "space - evenly",
   });
   const onShopClick = () => {
     if (shopHeight === "150px") {
@@ -26,6 +30,10 @@ const Navigation = ({ isSignin, setIsSignin }) => {
       height: `${shopHeight}`,
       opacity: `${shopOpacity}`,
       pointerEvents: `${shopEvent}`,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "space-evenly",
     });
   };
 
@@ -112,7 +120,7 @@ const Navigation = ({ isSignin, setIsSignin }) => {
       <style jsx>
         {`
           .nav {
-            position: absolute;
+            position: sticky;
             top: 0;
             min-width: 200px;
             width: 200px;
@@ -129,6 +137,10 @@ const Navigation = ({ isSignin, setIsSignin }) => {
               margin-bottom: 50px;
             }
             .nav-items {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
               width: 100%;
               font-size: 20px;
               font-weight: 600;

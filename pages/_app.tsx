@@ -1,14 +1,14 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
+import Layout from "../components/layout";
 
 import Navigation from "../components/navigation";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <Navigation {...pageProps} />
+    <Layout>
       <Component {...pageProps} />
-    </>
+    </Layout>
   );
 }
 
