@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-const Signin = ({ admin, setIsSignin }) => {
+const Signin = () => {
   const navigate = useRouter();
   const [signinInfo, setSigninInfo] = useState({
     id: "",
@@ -33,9 +33,7 @@ const Signin = ({ admin, setIsSignin }) => {
       return;
     }
 
-    let url = admin
-      ? "http://localhost:3031/admin/signin"
-      : "http://localhost:3031/signin";
+    let url = "http://localhost:3031/signin";
     axios({
       url: url,
       method: "POST",
@@ -58,7 +56,6 @@ const Signin = ({ admin, setIsSignin }) => {
           break;
         case "success":
           window.alert("성공");
-          setIsSignin(true);
           navigate.back();
           break;
         default:
@@ -67,7 +64,7 @@ const Signin = ({ admin, setIsSignin }) => {
     });
   };
   return (
-    <div className={`${admin ? "admin-signin" : "signin"}`}>
+    <div className="signin">
       <div className="content">
         <div className="submit-box">
           <div className="input-field">

@@ -13,8 +13,8 @@ const Shop = () => {
       header: { "Content-Type": "application/json" },
       method: "POST",
     }).then((data) => {
-      setStockList(data.data);
       console.log(data.data);
+      setStockList(data.data);
     });
   }, [router]);
   return (

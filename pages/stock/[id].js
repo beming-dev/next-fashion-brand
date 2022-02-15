@@ -5,7 +5,8 @@ import { useState } from "react";
 import parse from "html-react-parser";
 
 const StockPage = ({ isSignin }) => {
-  const { id } = useRouter();
+  const router = useRouter();
+  const { id } = router.query;
   const [itemInfo, setItemInfo] = useState({ description: "" });
 
   const onBasket = () => {
@@ -33,6 +34,7 @@ const StockPage = ({ isSignin }) => {
       method: "POST",
       header: { "Content-Type": "application/json" },
     }).then((data) => {
+      console.log(data);
       setItemInfo(data.data);
     });
   }, []);
