@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { LoginContext } from "./layout";
 
-const Navigation = ({ isSignin, setIsSignin }) => {
+const Navigation = () => {
+  const loginContext = useContext(LoginContext);
   const navigate = useRouter();
   const [shopHeight, setShopHeight] = useState("0");
   const [shopOpacity, setShopOpacity] = useState("0");
@@ -42,9 +44,8 @@ const Navigation = ({ isSignin, setIsSignin }) => {
       url: "http://localhost:3031/request/signout",
       method: "POST",
       withCredentials: true,
-    }).then(({ data }) => {
-      setIsSignin(data);
-      navigate("/");
+    }).then(() => {
+      loginContext.setLogin(false);
       navigate.push("/");
     });
   };
@@ -97,7 +98,7 @@ const Navigation = ({ isSignin, setIsSignin }) => {
           <Link href="/qna">Q&A</Link>
         </li>
       </ul>
-      {isSignin ? (
+      {loginContext.login ? (
         <div className="my">
           <span className="my-page">
             <Link href="/mypage/basket">MyPage</Link>

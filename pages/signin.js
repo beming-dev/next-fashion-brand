@@ -1,8 +1,10 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useRouter } from "next/router";
+import { LoginContext } from "../components/layout";
 
 const Signin = () => {
+  const loginContext = useContext(LoginContext);
   const navigate = useRouter();
   const [signinInfo, setSigninInfo] = useState({
     id: "",
@@ -56,6 +58,7 @@ const Signin = () => {
           break;
         case "success":
           window.alert("성공");
+          loginContext.setLogin(true);
           navigate.back();
           break;
         default:
