@@ -54,6 +54,7 @@ const StockItem = ({
             justify-content: center;
 
             .content {
+              width: 100%;
               display: flex;
               flex-direction: column;
               align-items: center;

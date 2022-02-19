@@ -30,12 +30,12 @@ const MyBasket = () => {
         //     },
         //   }
         navigate.push({
-          pathname: "order",
+          pathname: "/order",
           query: {
             order_id: res.data.id,
             items: itemInfo,
             price: finalPrice,
-            selectedItem: itemForPass,
+            selectedItem: JSON.stringify(itemForPass),
           },
         });
       }
@@ -80,7 +80,7 @@ const MyBasket = () => {
         {`
           .my-basket {
             width: 100%;
-            height: 100%;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
