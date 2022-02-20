@@ -1,4 +1,16 @@
+import { LoginContext } from "../components/Layout";
+import { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
+
 const QnAWrite = () => {
+  const router = useRouter();
+  const { login } = useContext(LoginContext);
+  useEffect(() => {
+    if (!login) {
+      alert("로그인 후 이용 가능합니다.");
+      router.back();
+    }
+  }, []);
   return (
     <div className="QnA-write">
       <div className="content">

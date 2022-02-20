@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useState, useContext } from "react";
 import { useRouter } from "next/router";
-import { LoginContext } from "../components/layout";
+import { LoginContext } from "../components/Layout";
 
 const Signin = () => {
-  const loginContext = useContext(LoginContext);
-  const navigate = useRouter();
+  let { setLogin } = useContext(LoginContext);
+  const router = useRouter();
   const [signinInfo, setSigninInfo] = useState({
     id: "",
     pw: "",
@@ -35,9 +35,8 @@ const Signin = () => {
       return;
     }
 
-    let url = "http://localhost:3031/signin";
     axios({
-      url: url,
+      url: "http://localhost:3031/signin",
       method: "POST",
       header: {
         ACCEPT: "application/json",
@@ -58,8 +57,8 @@ const Signin = () => {
           break;
         case "success":
           window.alert("성공");
-          loginContext.setLogin(true);
-          navigate.back();
+          setLogin(true);
+          router.back();
           break;
         default:
           break;

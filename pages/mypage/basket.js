@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import StockItem from "../../components/stockItem";
+import StockItem from "../../components/StockItem";
 
 const MyBasket = () => {
   const [itemInfo, setItemInfo] = useState([]);

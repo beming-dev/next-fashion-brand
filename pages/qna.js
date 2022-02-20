@@ -1,4 +1,4 @@
-import Question from "../components/question";
+import Question from "../components/Question";
 import Link from "next/link";
 
 const QnA = () => {
@@ -56,7 +56,9 @@ const QnA = () => {
           ))}
         </div>
         <button className="btn-write">
-          <Link href="/question">글쓰기</Link>
+          <Link href="/question">
+            <a>글쓰기</a>
+          </Link>
         </button>
       </div>
       <style jsx>

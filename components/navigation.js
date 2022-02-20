@@ -2,10 +2,10 @@ import axios from "axios";
 import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { LoginContext } from "./layout";
+import { LoginContext } from "./Layout";
 
 const Navigation = () => {
-  const loginContext = useContext(LoginContext);
+  const { login, setLogin } = useContext(LoginContext);
   const navigate = useRouter();
   const [shopHeight, setShopHeight] = useState("0");
   const [shopOpacity, setShopOpacity] = useState("0");
@@ -45,7 +45,7 @@ const Navigation = () => {
       method: "POST",
       withCredentials: true,
     }).then(() => {
-      loginContext.setLogin(false);
+      setLogin(false);
       navigate.push("/");
     });
   };
@@ -98,7 +98,7 @@ const Navigation = () => {
           <Link href="/qna">Q&A</Link>
         </li>
       </ul>
-      {loginContext.login ? (
+      {login ? (
         <div className="my">
           <span className="my-page">
             <Link href="/mypage/basket">MyPage</Link>

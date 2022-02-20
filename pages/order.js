@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import DaumPostcode from "react-daum-postcode";
-import StockItem from "../components/stockItem";
+import StockItem from "../components/StockItem";
 
 const Order = () => {
   const location = useRouter();
