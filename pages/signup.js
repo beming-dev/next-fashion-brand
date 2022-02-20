@@ -1,7 +1,10 @@
 import DaumPostcode from "react-daum-postcode";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
+
 const Signup = () => {
+  const router = useRouter();
   const [checkTextStyle, setCheckTextStyle] = useState({
     display: "none",
     fontSize: "13px",
@@ -102,6 +105,9 @@ const Signup = () => {
           zipcode: signupInfo.zipcode,
           address: signupInfo.address,
         },
+      }).then(() => {
+        alert("회원가입이 완료됐습니다.");
+        router.push("/");
       });
     }
     if (!idCheck) window.alert("아이디를 확인해주세요.");

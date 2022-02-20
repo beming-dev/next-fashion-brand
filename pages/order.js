@@ -5,7 +5,7 @@ import DaumPostcode from "react-daum-postcode";
 import StockItem from "../components/StockItem";
 
 const Order = () => {
-  const location = useRouter();
+  const router = useRouter();
   const [totalPrice, setTotalPrice] = useState(0);
   const [openPost, setOpenPost] = useState(false);
   const [address, setAddress] = useState("");
@@ -14,7 +14,7 @@ const Order = () => {
     pg: "kakaopay", // PG사
     pay_method: "card", // 결제수단
     merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
-    amount: location.query.price, // 결제금액
+    amount: router.query.price, // 결제금액
     name: "아임포트 결제 데이터 분석", // 주문명
     buyer_name: "홍길동", // 구매자 이름
     buyer_tel: "01012341234", // 구매자 전화번호
@@ -24,7 +24,7 @@ const Order = () => {
   });
 
   useEffect(() => {
-    setTotalPrice(location.query.price);
+    setTotalPrice(router.query.price);
     axios({
       url: "http://localhost:3031/request/userInfo",
       method: "POST",
@@ -43,7 +43,7 @@ const Order = () => {
         buyer_email: data.email,
       }));
     });
-  }, [location.query.price]);
+  }, [router.query.price]);
 
   useEffect(() => {
     setPayData((state) => ({
@@ -99,17 +99,18 @@ const Order = () => {
         url: "http://localhost:3031/request/payComplete",
         method: "POST",
         data: {
-          items: location.query.selectedItem,
-          order_id: location.query.order_id,
+          items: JSON.parse(router.query.selectedItem),
+          order_id: router.query.order_id,
         },
       });
+      router.push("/");
     } else alert(`결제 실패: ${error_msg}`);
   };
 
   return (
     <div className="order-page">
       <div className="content">
-        {JSON.parse(location.query.selectedItem).map((stock) => {
+        {JSON.parse(router.query.selectedItem).map((stock) => {
           stock = JSON.parse(stock);
           return (
             <StockItem
