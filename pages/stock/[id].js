@@ -1,32 +1,15 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { useState } from "react";
 import parse from "html-react-parser";
+import { LoginContext } from "../../components/Layout";
 
-const StockPage = ({ isSignin }) => {
+const StockPage = () => {
+  const { login, setLogin } = useContext(LoginContext);
   const router = useRouter();
   const { id } = router.query;
-  const [itemInfo, setItemInfo] = useState({ description: "" });
-
-  const onBasket = () => {
-    axios({
-      url: "http://localhost:3031/request/basket",
-      method: "POST",
-      header: {
-        ACCEPT: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: { stockId: itemInfo.stock_id },
-      withCredentials: true,
-    }).then((success) => {
-      if (success.data) {
-        alert("장바구니에 들어갔습니다.");
-      } else {
-        alert("err");
-      }
-    });
-  };
+  console.log(router);
+  const [itemInfo, setItemInfo] = useState({ description: "init" });
 
   useEffect(() => {
     axios({
@@ -38,6 +21,29 @@ const StockPage = ({ isSignin }) => {
       setItemInfo(data.data);
     });
   }, []);
+
+  const onBasket = () => {
+    if (login) {
+      axios({
+        url: "http://localhost:3031/request/basket",
+        method: "POST",
+        header: {
+          ACCEPT: "application/json",
+          "Content-Type": "application/json",
+        },
+        data: { stockId: itemInfo.stock_id },
+        withCredentials: true,
+      }).then((success) => {
+        if (success.data) {
+          alert("장바구니에 들어갔습니다.");
+        } else {
+          alert("err");
+        }
+      });
+    } else {
+      alert("로그인 후 이용 부탁드립니다.");
+    }
+  };
 
   return (
     <div className="stock-page">
@@ -100,5 +106,11 @@ const StockPage = ({ isSignin }) => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  return {
+    props: {},
+  };
+}
 
 export default StockPage;
