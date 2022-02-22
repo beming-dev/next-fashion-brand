@@ -23,7 +23,6 @@ const StockItem = ({
       newArr.splice(newArr.indexOf(JSON.stringify(stock)), 1);
       setLocalFinal(finalPrice - price);
     }
-    console.log(newArr);
     setItemForPass(newArr);
   };
   return (

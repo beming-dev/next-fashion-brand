@@ -8,7 +8,6 @@ const StockPage = () => {
   const { login, setLogin } = useContext(LoginContext);
   const router = useRouter();
   const { id } = router.query;
-  console.log(router);
   const [itemInfo, setItemInfo] = useState({ description: "init" });
 
   useEffect(() => {
@@ -17,7 +16,6 @@ const StockPage = () => {
       method: "POST",
       header: { "Content-Type": "application/json" },
     }).then((data) => {
-      console.log(data);
       setItemInfo(data.data);
     });
   }, []);

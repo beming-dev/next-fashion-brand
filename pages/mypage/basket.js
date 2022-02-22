@@ -52,10 +52,6 @@ const MyBasket = () => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(itemForPass);
-  }, [itemForPass]);
-
   return (
     <div className="my-basket">
       <div className="content">
