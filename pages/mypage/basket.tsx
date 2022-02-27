@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import StockItem from "../../components/StockItem";
+import customAxios from "../../lib/customAxios";
 
 const MyBasket = () => {
   const [itemInfo, setItemInfo] = useState([]);
@@ -14,21 +14,9 @@ const MyBasket = () => {
       alert("선택된 상품이 없습니다.");
       return;
     }
-    axios({
-      url: "http://localhost:3031/create/order",
-      method: "POST",
-      withCredentials: true,
-    }).then((res) => {
+    customAxios.post("/create/order").then((res) => {
       if (res.data.id === 0) alert("err");
       else {
-        // "/order", {
-        //     state: {
-        //         order_id: res.data.id,
-        //       items: itemInfo,
-        //       price: finalPrice,
-        //       selectedItem: itemForPass,
-        //     },
-        //   }
         navigate.push({
           pathname: "/order",
           query: {
@@ -43,11 +31,7 @@ const MyBasket = () => {
   };
 
   useEffect(() => {
-    axios({
-      url: "http://localhost:3031/request/userOrder",
-      method: "POST",
-      withCredentials: true,
-    }).then(({ data }) => {
+    customAxios.post("/request/userOrder").then(({ data }) => {
       setItemInfo(data);
     });
   }, []);
@@ -56,7 +40,7 @@ const MyBasket = () => {
     <div className="my-basket">
       <div className="content">
         <span className="title">장바구니</span>
-        {itemInfo.map((stock) => (
+        {itemInfo.map((stock: any) => (
           <StockItem
             stock={stock}
             setFinalPrice={setFinalPrice}

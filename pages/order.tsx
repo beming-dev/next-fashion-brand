@@ -1,20 +1,42 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
 import DaumPostcode from "react-daum-postcode";
 import StockItem from "../components/StockItem";
+import customAxios from "../lib/customAxios";
+
+interface payDataType {
+  pg: string; // PG사
+  pay_method: string; // 결제수단
+  merchant_uid: string; // 주문번호
+  amount: number; // 결제금액
+  name: string; // 주문명
+  buyer_name: string; // 구매자 이름
+  buyer_tel: string; // 구매자 전화번호
+  buyer_email: string; // 구매자 이메일
+  buyer_addr: string; // 구매자 주소
+  buyer_postcode: string; // 구매자 우편번호
+}
+
+interface stockType {
+  category: string;
+  description: string;
+  name: string;
+  price: number;
+  stock_id: number;
+  thumbnail: string | null;
+}
 
 const Order = () => {
   const router = useRouter();
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [openPost, setOpenPost] = useState(false);
-  const [address, setAddress] = useState("");
-  const [addressDetail, setAddressDetail] = useState("");
-  const [payData, setPayData] = useState({
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [openPost, setOpenPost] = useState<boolean>(false);
+  const [address, setAddress] = useState<string>("");
+  const [addressDetail, setAddressDetail] = useState<string>("");
+  const [payData, setPayData] = useState<payDataType>({
     pg: "kakaopay", // PG사
     pay_method: "card", // 결제수단
     merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
-    amount: router.query.price, // 결제금액
+    amount: parseInt(router.query.price as string), // 결제금액
     name: "아임포트 결제 데이터 분석", // 주문명
     buyer_name: "홍길동", // 구매자 이름
     buyer_tel: "01012341234", // 구매자 전화번호
@@ -24,18 +46,8 @@ const Order = () => {
   });
 
   useEffect(() => {
-    setTotalPrice(router.query.price);
-    axios({
-      url: "http://localhost:3031/request/userInfo",
-      method: "POST",
-      withCredentials: true,
-    }).then(({ data }) => {
-      // setPayData({
-      //   ...payData,
-      //   buyer_name: data.nickname,
-      //   buyer_tel: data.phone,
-      //   buyer_email: data.email,
-      // });
+    setTotalPrice(parseInt(router.query.price as string));
+    customAxios.post("/request/userInfo").then(({ data }) => {
       setPayData((state) => ({
         ...state,
         buyer_name: data.nickname,
@@ -59,7 +71,8 @@ const Order = () => {
     border: "1px solid black",
   };
 
-  const onCompletePost = async (data) => {
+  const onCompletePost = async (data: any) => {
+    console.log(data);
     let fullAddr = data.address;
     let extraAddr = "";
 
@@ -82,7 +95,7 @@ const Order = () => {
   };
 
   const onPayRequest = () => {
-    const { IMP } = window;
+    const { IMP }: any = window;
     if (IMP) {
       IMP.init("imp85727494");
       IMP.request_pay(payData, callback);
@@ -91,7 +104,7 @@ const Order = () => {
     }
   };
 
-  const callback = (res) => {
+  const callback = (res: any) => {
     const { success, error_msg } = res;
     if (success) {
       alert("결제 성공");
@@ -99,7 +112,7 @@ const Order = () => {
         url: "http://localhost:3031/request/payComplete",
         method: "POST",
         data: {
-          items: JSON.parse(router.query.selectedItem),
+          items: JSON.parse(router.query.selectedItem as string),
           order_id: router.query.order_id,
         },
       });
@@ -110,7 +123,7 @@ const Order = () => {
   return (
     <div className="order-page">
       <div className="content">
-        {JSON.parse(router.query.selectedItem).map((stock) => {
+        {JSON.parse(router.query.selectedItem as string).map((stock) => {
           stock = JSON.parse(stock);
           return (
             <StockItem
@@ -169,7 +182,7 @@ const Order = () => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   return {
     props: {}, // will be passed to the page component as props
   };

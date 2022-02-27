@@ -10,7 +10,7 @@ const QnAWrite = () => {
       alert("로그인 후 이용 가능합니다.");
       router.back();
     }
-  }, []);
+  }, [router, login]);
   return (
     <div className="QnA-write">
       <div className="content">

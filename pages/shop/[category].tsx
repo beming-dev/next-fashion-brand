@@ -1,21 +1,28 @@
-import Stock from "../../components/stock";
-import { useRouter } from "next/router";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Stock from "../../components/stock";
+import customAxios from "../../lib/customAxios";
+
+interface stockType {
+  category: string;
+  name: string;
+  price: number;
+  stock_id: number;
+  thumbnail: string | null;
+}
 
 const Shop = () => {
   const router = useRouter();
   const { category } = router.query;
-  const [stockList, setStockList] = useState([]);
+
+  const [stockList, setStockList] = useState<stockType[]>([]);
+
   useEffect(() => {
-    axios({
-      url: `http://localhost:3031/request/stocklist/${category}`,
-      header: { "Content-Type": "application/json" },
-      method: "POST",
-    }).then((data) => {
+    customAxios.post(`request/stocklist/${category}`).then((data) => {
       setStockList(data.data);
     });
-  }, [router]);
+  }, [category]);
+
   return (
     <div className="shop-page">
       <div className="content">

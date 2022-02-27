@@ -1,4 +1,20 @@
-const Question = ({ writer, title, date, category, status, secret }) => {
+interface questionType {
+  writer: string;
+  title: string;
+  date: string;
+  category: string;
+  status: string;
+  secret: any;
+}
+
+const Question = ({
+  writer,
+  title,
+  date,
+  category,
+  status,
+  secret,
+}: questionType) => {
   return (
     <div className="question">
       <span className="writer">{writer}</span>

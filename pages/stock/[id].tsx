@@ -1,43 +1,49 @@
 import { useRouter } from "next/router";
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import customAxios from "../../lib/customAxios";
 import parse from "html-react-parser";
 import { LoginContext } from "../../components/Layout";
 
+interface itemInfoType {
+  category: string;
+  description: string;
+  name: string;
+  price: number;
+  stock_id: number;
+  thumbnail: string | null;
+}
+
 const StockPage = () => {
-  const { login, setLogin } = useContext(LoginContext);
+  const { login } = useContext(LoginContext);
   const router = useRouter();
   const { id } = router.query;
-  const [itemInfo, setItemInfo] = useState({ description: "init" });
+
+  const [itemInfo, setItemInfo] = useState<itemInfoType>({
+    category: "",
+    description: "",
+    name: "",
+    price: 0,
+    stock_id: 0,
+    thumbnail: "",
+  });
 
   useEffect(() => {
-    axios({
-      url: `http://localhost:3031/request/stock/${id}`,
-      method: "POST",
-      header: { "Content-Type": "application/json" },
-    }).then((data) => {
+    customAxios.post(`request/stock/${id}`).then((data) => {
       setItemInfo(data.data);
     });
   }, []);
 
   const onBasket = () => {
     if (login) {
-      axios({
-        url: "http://localhost:3031/request/basket",
-        method: "POST",
-        header: {
-          ACCEPT: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: { stockId: itemInfo.stock_id },
-        withCredentials: true,
-      }).then((success) => {
-        if (success.data) {
-          alert("장바구니에 들어갔습니다.");
-        } else {
-          alert("err");
-        }
-      });
+      customAxios
+        .post("request/basket", { stockId: itemInfo.stock_id })
+        .then((response) => {
+          if (response.data) {
+            alert("장바구니에 들어갔습니다.");
+          } else {
+            alert("err");
+          }
+        });
     } else {
       alert("로그인 후 이용 부탁드립니다.");
     }
@@ -105,7 +111,7 @@ const StockPage = () => {
   );
 };
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   return {
     props: {},
   };

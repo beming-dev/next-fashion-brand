@@ -1,22 +1,27 @@
-import axios from "axios";
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { LoginContext } from "../components/Layout";
+import customAxios from "../lib/customAxios";
+
+interface signinType {
+  id: string;
+  pw: string;
+}
 
 const Signin = () => {
   let { setLogin } = useContext(LoginContext);
   const router = useRouter();
-  const [signinInfo, setSigninInfo] = useState({
+  const [signinInfo, setSigninInfo] = useState<signinType>({
     id: "",
     pw: "",
   });
-  const onIdChange = (e) => {
+  const onIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSigninInfo({
       ...signinInfo,
       id: e.target.value,
     });
   };
-  const onPwChange = (e) => {
+  const onPwChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSigninInfo({
       ...signinInfo,
       pw: e.target.value,
@@ -34,36 +39,25 @@ const Signin = () => {
       window.alert("비밀번호를 확인해주세요");
       return;
     }
-
-    axios({
-      url: "http://localhost:3031/signin",
-      method: "POST",
-      header: {
-        ACCEPT: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: {
-        id: signinInfo.id,
-        pw: signinInfo.pw,
-      },
-      withCredentials: true,
-    }).then((res) => {
-      switch (res.data) {
-        case "id":
-          window.alert("존재하지 않는 아이디 입니다.");
-          break;
-        case "pw":
-          window.alert("비밀번호가 일치하지 않습니다.");
-          break;
-        case "success":
-          window.alert("성공");
-          setLogin(true);
-          router.back();
-          break;
-        default:
-          break;
-      }
-    });
+    customAxios
+      .post("/signin", { id: signinInfo.id, pw: signinInfo.pw })
+      .then((res) => {
+        switch (res.data) {
+          case "id":
+            window.alert("존재하지 않는 아이디 입니다.");
+            break;
+          case "pw":
+            window.alert("비밀번호가 일치하지 않습니다.");
+            break;
+          case "success":
+            window.alert("성공");
+            setLogin(true);
+            router.back();
+            break;
+          default:
+            break;
+        }
+      });
   };
   return (
     <div className="signin">

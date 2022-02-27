@@ -1,8 +1,8 @@
-import axios from "axios";
 import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { LoginContext } from "./Layout";
+import customAxios from "../lib/customAxios";
 
 const Navigation = () => {
   const { login, setLogin } = useContext(LoginContext);
@@ -11,12 +11,13 @@ const Navigation = () => {
   const [shopOpacity, setShopOpacity] = useState("0");
   const [shopEvent, setShopEvent] = useState("none");
   const [shopSubStyle, setShopSubStyle] = useState({
-    height: `${shopHeight}`,
-    opacity: `${shopOpacity}`,
+    height: shopHeight,
+    opacity: shopOpacity,
+    pointerEvents: "auto",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justidyContent: "space - evenly",
+    justifyContent: "space-evenly",
   });
   const onShopClick = () => {
     if (shopHeight === "150px") {
@@ -40,11 +41,7 @@ const Navigation = () => {
   };
 
   const onSignout = () => {
-    axios({
-      url: "http://localhost:3031/request/signout",
-      method: "POST",
-      withCredentials: true,
-    }).then(() => {
+    customAxios.post("/request/signout").then(() => {
       setLogin(false);
       navigate.push("/");
     });

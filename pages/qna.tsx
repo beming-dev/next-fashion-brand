@@ -1,8 +1,17 @@
 import Question from "../components/Question";
 import Link from "next/link";
 
+interface questionType {
+  writer: string;
+  title: string;
+  date: string;
+  category: string;
+  status: string;
+  secret: boolean;
+}
+
 const QnA = () => {
-  let questions = [
+  let questions: questionType[] = [
     {
       writer: "marvin",
       title: "안녕하세요",
@@ -29,7 +38,7 @@ const QnA = () => {
     },
   ];
 
-  let qnaCount = [1, 2, 3];
+  let qnaCount: number[] = [1, 2, 3];
   return (
     <div className="qna">
       <div className="content">

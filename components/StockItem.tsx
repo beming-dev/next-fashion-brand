@@ -1,6 +1,15 @@
 import { useEffect } from "react";
 import { useState } from "react";
 
+interface stockItemType {
+  stock: any;
+  finalPrice: number;
+  setFinalPrice: any;
+  basket: any;
+  setItemForPass: any;
+  itemForPass: any;
+}
+
 const StockItem = ({
   stock,
   finalPrice,
@@ -8,13 +17,13 @@ const StockItem = ({
   basket,
   setItemForPass,
   itemForPass,
-}) => {
+}: stockItemType) => {
   const [localFinal, setLocalFinal] = useState(finalPrice);
   useEffect(() => {
     if (setFinalPrice) setFinalPrice(localFinal);
   }, [localFinal]);
 
-  const onCheck = (box, price) => {
+  const onCheck = (box: any, price: number) => {
     let newArr = itemForPass;
     if (box.target.checked) {
       newArr.push(JSON.stringify(stock));

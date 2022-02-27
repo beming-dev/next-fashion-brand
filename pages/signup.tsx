@@ -1,7 +1,18 @@
 import DaumPostcode from "react-daum-postcode";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import customAxios from "../lib/customAxios";
 import { useRouter } from "next/router";
+
+interface signupInfoType {
+  nickname: string;
+  id: string;
+  pw: string;
+  pwCheck: string;
+  phone: string;
+  email: string;
+  zipcode: string;
+  address: string;
+}
 
 const Signup = () => {
   const router = useRouter();
@@ -15,7 +26,7 @@ const Signup = () => {
   const [openPost, setOpenPost] = useState(false);
   const [address, setAddress] = useState("");
   const [addressDetail, setAddressDetail] = useState("");
-  const [signupInfo, setSignupInfo] = useState({
+  const [signupInfo, setSignupInfo] = useState<signupInfoType>({
     nickname: "",
     id: "",
     pw: "",
@@ -28,9 +39,13 @@ const Signup = () => {
 
   useEffect(() => {
     pwAvailable();
-  }, [signupInfo.pw, signupInfo.pwCheck]);
+  }, []);
 
-  const editSignupInfo = async (num, e, add = "") => {
+  const editSignupInfo = async (
+    num: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+    add: string = ""
+  ) => {
     switch (num) {
       case 1:
         setSignupInfo({
@@ -89,14 +104,8 @@ const Signup = () => {
 
   const onSubmit = () => {
     if (pwCheck && idCheck) {
-      axios({
-        url: "http://localhost:3031/signup",
-        method: "POST",
-        header: {
-          ACCEPT: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: {
+      customAxios
+        .post("/signup", {
           nickname: signupInfo.nickname,
           id: signupInfo.id,
           pw: signupInfo.pw,
@@ -104,11 +113,11 @@ const Signup = () => {
           email: signupInfo.email,
           zipcode: signupInfo.zipcode,
           address: signupInfo.address,
-        },
-      }).then(() => {
-        alert("회원가입이 완료됐습니다.");
-        router.push("/");
-      });
+        })
+        .then(() => {
+          alert("회원가입이 완료됐습니다.");
+          router.push("/");
+        });
     }
     if (!idCheck) window.alert("아이디를 확인해주세요.");
     else if (!pwCheck) window.alert("비밀번호를 확인해주세요.");
@@ -121,7 +130,7 @@ const Signup = () => {
     border: "1px solid black",
   };
 
-  const onCompletePost = async (data) => {
+  const onCompletePost = async (data: any) => {
     let fullAddr = data.address;
     let extraAddr = "";
 
@@ -140,7 +149,7 @@ const Signup = () => {
     //editSignupInfo(6, fullAddr);
   };
 
-  const idAvailable = (id) => {
+  const idAvailable = (id: string) => {
     let regExp = /^[a-z]+[a-z0-9]{5,19}$/g;
     return regExp.test(id);
   };
@@ -166,24 +175,18 @@ const Signup = () => {
 
   const checkRepeat = () => {
     if (idAvailable(signupInfo.id)) {
-      axios({
-        url: "http://localhost:3031/request/id",
-        method: "POST",
-        header: {
-          ACCEPT: "application/json",
-          "Content-Type": "application/json",
-        },
-        data: {
+      customAxios
+        .post("/request/id", {
           id: signupInfo.id,
-        },
-      }).then((res) => {
-        if (res.data) {
-          window.alert("중복된 id입니다.");
-        } else {
-          window.alert("사용 가능합니다.");
-          setIdCheck(true);
-        }
-      });
+        })
+        .then((res) => {
+          if (res.data) {
+            window.alert("중복된 id입니다.");
+          } else {
+            window.alert("사용 가능합니다.");
+            setIdCheck(true);
+          }
+        });
     } else {
       window.alert("영문자로 시작하는 영문자 또는 숫자 6~20자 입력해주세요.");
     }
