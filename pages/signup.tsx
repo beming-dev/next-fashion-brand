@@ -123,7 +123,7 @@ const Signup = () => {
     else if (!pwCheck) window.alert("비밀번호를 확인해주세요.");
   };
 
-  const postStyle = {
+  const postStyle: any = {
     position: "absolute",
     width: "500px",
     height: "500px",

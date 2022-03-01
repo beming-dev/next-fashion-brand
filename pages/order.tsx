@@ -64,7 +64,7 @@ const Order = () => {
     }));
   }, [totalPrice]);
 
-  const postStyle = {
+  const postStyle: any = {
     position: "absolute",
     width: "500px",
     height: "500px",
@@ -108,13 +108,9 @@ const Order = () => {
     const { success, error_msg } = res;
     if (success) {
       alert("결제 성공");
-      axios({
-        url: "http://localhost:3031/request/payComplete",
-        method: "POST",
-        data: {
-          items: JSON.parse(router.query.selectedItem as string),
-          order_id: router.query.order_id,
-        },
+      customAxios.post("/request/payComplete", {
+        items: JSON.parse(router.query.selectedItem as string),
+        order_id: router.query.order_id,
       });
       router.push("/");
     } else alert(`결제 실패: ${error_msg}`);
@@ -123,14 +119,17 @@ const Order = () => {
   return (
     <div className="order-page">
       <div className="content">
-        {JSON.parse(router.query.selectedItem as string).map((stock) => {
+        {JSON.parse(router.query.selectedItem as string).map((stock: any) => {
           stock = JSON.parse(stock);
           return (
             <StockItem
               key={stock.stock_id}
-              setTotalPrice={setTotalPrice}
+              setFinalPrice={setTotalPrice}
               stock={stock}
               basket={false}
+              finalPrice={0}
+              setItemForPass={null}
+              itemForPass={null}
             />
           );
         })}

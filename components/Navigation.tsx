@@ -4,13 +4,23 @@ import Link from "next/link";
 import { LoginContext } from "./Layout";
 import customAxios from "../lib/customAxios";
 
+interface shopStyleType {
+  height: string;
+  opacity: string;
+  pointerEvents: string;
+  display: string;
+  flexDirection: string;
+  alignItems: string;
+  justifyContent: string;
+}
+
 const Navigation = () => {
   const { login, setLogin } = useContext(LoginContext);
   const navigate = useRouter();
   const [shopHeight, setShopHeight] = useState("0");
   const [shopOpacity, setShopOpacity] = useState("0");
   const [shopEvent, setShopEvent] = useState("none");
-  const [shopSubStyle, setShopSubStyle] = useState({
+  const [shopSubStyle, setShopSubStyle] = useState<any>({
     height: shopHeight,
     opacity: shopOpacity,
     pointerEvents: "auto",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Stock from "../../components/stock";
+import Stock from "../../components/Stock";
 import customAxios from "../../lib/customAxios";
 
 interface stockType {
